@@ -35,14 +35,17 @@ namespace RickPowell.FeatureSwitches
                     Strength = Order.Strength.Strong
                 });
 
-                Console.WriteLine("Fund purchase was successfully made :)");
+                var response = await mediator.Send(new GetPurchases.Request());
+
+                foreach (var purchase in response.Purchases)
+                {
+                    Console.WriteLine($"{purchase.Customer.Name} bought a coffee for '{purchase.Cost}'");
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Fund purchase could not be made :(. {ex.Message}.");
+                Console.WriteLine($"Something went wrong :(. {ex.Message}.");
             }
-
-            Console.ReadKey();
         }
     }
 }
