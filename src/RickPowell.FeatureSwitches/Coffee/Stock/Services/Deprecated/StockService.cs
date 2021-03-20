@@ -1,7 +1,7 @@
 ﻿using RickPowell.FeatureSwitches.Coffee.Stock.Domain;
 using System.Threading.Tasks;
 
-namespace RickPowell.FeatureSwitches.Coffee.Stock.Services
+namespace RickPowell.FeatureSwitches.Coffee.Stock.Services.Deprecated
 {
     public class StockService : IStockService
     {
@@ -9,7 +9,7 @@ namespace RickPowell.FeatureSwitches.Coffee.Stock.Services
         {
             return Task.FromResult(new Quantity
             {
-                Kilograms = 1000000m
+                Kilograms = 0m
             });
         }
     }
