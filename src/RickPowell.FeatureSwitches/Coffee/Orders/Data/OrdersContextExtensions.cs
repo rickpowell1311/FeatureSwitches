@@ -7,7 +7,7 @@ namespace RickPowell.FeatureSwitches.Coffee.Orders.Data
     {
         public static async Task RunMigrations(this OrdersContext context)
         {
-            context.Blends.Add(Blend.Create("Columbian", new Cost(2m, Currency.Gbp)));
+            context.Blends.Add(Blend.Create("Columbian", new Cost(2m)));
 
             await context.SaveChangesAsync();
         }

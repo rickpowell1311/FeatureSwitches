@@ -6,9 +6,7 @@ namespace RickPowell.FeatureSwitches.Coffee.Orders.Domain
     {
         public decimal Amount { get; protected set; }
 
-        public Currency Currency { get; protected set; }
-
-        public Cost(decimal amount, Currency currency)
+        public Cost(decimal amount)
         {
             if (amount < 0)
             {
@@ -16,7 +14,11 @@ namespace RickPowell.FeatureSwitches.Coffee.Orders.Domain
             }
 
             Amount = amount;
-            Currency = currency;
+        }
+
+        public override string ToString()
+        {
+            return $"{Amount:c}";
         }
 
         public override bool Equals(object obj)
@@ -31,13 +33,12 @@ namespace RickPowell.FeatureSwitches.Coffee.Orders.Domain
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Amount, Currency);
+            return HashCode.Combine(Amount);
         }
 
         public static bool operator ==(Cost first, Cost second)
         {
-            return first?.Amount == second?.Amount
-                && first?.Currency == second?.Currency;
+            return first?.Amount == second?.Amount;
         }
 
         public static bool operator !=(Cost first, Cost second)
@@ -47,12 +48,22 @@ namespace RickPowell.FeatureSwitches.Coffee.Orders.Domain
 
         public static Cost operator *(Cost cost, decimal multiplier)
         {
-            return new Cost(cost.Amount * multiplier, cost.Currency);
+            return new Cost(cost.Amount * multiplier);
         }
 
         public static Cost operator *(decimal multiplier, Cost cost)
         {
-            return new Cost(cost.Amount * multiplier, cost.Currency);
+            return new Cost(cost.Amount * multiplier);
+        }
+
+        public static Cost operator +(Cost cost, decimal amount)
+        {
+            return new Cost(cost.Amount + amount);
+        }
+
+        public static Cost operator +(decimal amount, Cost cost)
+        {
+            return new Cost(cost.Amount + amount);
         }
     }
 }
