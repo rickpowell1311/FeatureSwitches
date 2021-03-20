@@ -16,18 +16,7 @@ namespace RickPowell.FeatureSwitches.Coffee.Orders.Domain
         {
         }
 
-        public static Func<Customer, Blend, Strength, IStockService, Task<Purchase>> MakePurchase(
-            bool useCovidContingencyPurchasePricing)
-        {
-            if (useCovidContingencyPurchasePricing)
-            {
-                return MakeCovidContingencyPurchase;
-            }
-
-            return MakePurchase;
-        }
-
-        private static async Task<Purchase> MakePurchase(
+        public static async Task<Purchase> MakePurchase(
             Customer customer, 
             Blend blend,
             Strength strength, 
@@ -45,20 +34,6 @@ namespace RickPowell.FeatureSwitches.Coffee.Orders.Domain
                 Cost = blend.GetCost(strength),
                 Customer = new Customer(customer.Name)
             };
-        }
-
-        private static async Task<Purchase> MakeCovidContingencyPurchase(
-            Customer customer,
-            Blend blend,
-            Strength strength,
-            IStockService stockService)
-        {
-            var covidContingencyFee = 0.5m;
-
-            var purchase = await MakePurchase(customer, blend, strength, stockService);
-            purchase.Cost += covidContingencyFee;
-
-            return purchase;
         }
     }
 }
