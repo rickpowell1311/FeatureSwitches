@@ -2,6 +2,5 @@
 {
     public class Settings
     {
-        public bool UseImprovedStockService { get; set; } = false;
     }
 }
