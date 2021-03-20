@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using RickPowell.FeatureSwitches.Coffee.Orders.Data;
 using RickPowell.FeatureSwitches.Coffee.Orders.Domain;
 using RickPowell.FeatureSwitches.Coffee.Stock.Services;
+using RickPowell.FeatureSwitches.FeatureSwitches.Services;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -41,11 +42,13 @@ namespace RickPowell.FeatureSwitches.Coffee.Orders.Requests
         {
             private readonly OrdersContext _context;
             private readonly IStockService _stockService;
+            private readonly ISettingsService _settingsService;
 
-            public Handler(OrdersContext context, IStockService stockService)
+            public Handler(OrdersContext context, IStockService stockService, ISettingsService settingsService)
             {
                 _context = context;
                 _stockService = stockService;
+                _settingsService = settingsService;
             }
 
             public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
@@ -57,11 +60,14 @@ namespace RickPowell.FeatureSwitches.Coffee.Orders.Requests
                     throw new InvalidOperationException($"Blend '{request.Blend.Name}' unavailable");
                 }
 
-                var purchase = await Purchase.Create(
-                    new Domain.Customer(request.Customer.Name),
-                    blend,
-                    request.Strength.ToStrength(),
-                    _stockService);
+                var settings = await _settingsService.GetSettings();
+
+                var purchase = await Purchase.MakePurchase(
+                    useCovidContingencyPurchasePricing: settings.EnableCovidContingency)(
+                        new Domain.Customer(request.Customer.Name),
+                        blend,
+                        request.Strength.ToStrength(),
+                        _stockService);
 
                 _context.Purchases.Add(purchase);
 
