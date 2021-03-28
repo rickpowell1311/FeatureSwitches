@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using RickPowell.FeatureSwitches.Coffee.Orders.Data;
 using RickPowell.FeatureSwitches.Coffee.Orders.Domain;
-using RickPowell.FeatureSwitches.Coffee.Stock.Services;
+using RickPowell.FeatureSwitches.Coffee.Supply.Services;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -40,12 +40,12 @@ namespace RickPowell.FeatureSwitches.Coffee.Orders.Requests
         public class Handler : IRequestHandler<Request>
         {
             private readonly OrdersContext _context;
-            private readonly IStockService _stockService;
+            private readonly ISupplierService _supplierService;
 
-            public Handler(OrdersContext context, IStockService stockService)
+            public Handler(OrdersContext context, ISupplierService supplierService)
             {
                 _context = context;
-                _stockService = stockService;
+                _supplierService = supplierService;
             }
 
             public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
@@ -61,7 +61,7 @@ namespace RickPowell.FeatureSwitches.Coffee.Orders.Requests
                         new Domain.Customer(request.Customer.Name),
                         blend,
                         request.Strength.ToStrength(),
-                        _stockService);
+                        _supplierService);
 
                 _context.Purchases.Add(purchase);
 

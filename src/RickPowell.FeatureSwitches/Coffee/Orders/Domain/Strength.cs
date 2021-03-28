@@ -10,11 +10,11 @@ namespace RickPowell.FeatureSwitches.Coffee.Orders.Domain
 
         public static Strength Strong => new Strength(0.04m);
 
-        public decimal Kilograms { get; }
+        public decimal KilogramsOfCoffee { get; }
 
         public Strength(decimal kilograms)
         {
-            Kilograms = kilograms;
+            KilogramsOfCoffee = kilograms;
         }
 
         public override bool Equals(object obj)
@@ -29,12 +29,12 @@ namespace RickPowell.FeatureSwitches.Coffee.Orders.Domain
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Kilograms);
+            return HashCode.Combine(KilogramsOfCoffee);
         }
 
         public static bool operator ==(Strength first, Strength second)
         {
-            return first?.Kilograms == second?.Kilograms;
+            return first?.KilogramsOfCoffee == second?.KilogramsOfCoffee;
         }
 
         public static bool operator !=(Strength first, Strength second)

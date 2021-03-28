@@ -2,8 +2,8 @@
 
 namespace RickPowell.FeatureSwitches.FeatureSwitches.Services
 {
-    public interface ISettingsService
+    public interface IFeatureSwitchService
     {
-        Task<Settings> GetSettings();
+        Task<FeatureSwitches> GetFeatureSwitches();
     }
 }

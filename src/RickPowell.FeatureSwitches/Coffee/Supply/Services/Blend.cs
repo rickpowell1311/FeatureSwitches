@@ -1,4 +1,4 @@
-﻿namespace RickPowell.FeatureSwitches.Coffee.Stock.Services
+﻿namespace RickPowell.FeatureSwitches.Coffee.Supply.Services
 {
     public class Blend
     {

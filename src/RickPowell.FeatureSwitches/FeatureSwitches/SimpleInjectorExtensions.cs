@@ -7,7 +7,7 @@ namespace RickPowell.FeatureSwitches.Core
     {
         public static void RegisterFeatureSwitchesModule(this Container container)
         {
-            container.Register<ISettingsService, SettingsService>();
+            container.Register<IFeatureSwitchService, FeatureSwitchService>();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using RickPowell.FeatureSwitches.Coffee.Stock.Services;
+﻿using RickPowell.FeatureSwitches.Coffee.Supply.Services;
 using System;
 using System.Threading.Tasks;
 
@@ -20,11 +20,11 @@ namespace RickPowell.FeatureSwitches.Coffee.Orders.Domain
             Customer customer, 
             Blend blend,
             Strength strength, 
-            IStockService stockService)
+            ISupplierService supplierService)
         {
-            var quantity = await stockService.GetQuantity(new Stock.Services.Blend { Name = blend.Name });
+            var quantity = await supplierService.GetQuantity(new Supply.Services.Blend { Name = blend.Name });
 
-            if (strength.Kilograms > quantity.Kilograms)
+            if (strength.KilogramsOfCoffee > quantity.Kilograms)
             {
                 throw new InvalidOperationException("Not enough coffee :(");
             }

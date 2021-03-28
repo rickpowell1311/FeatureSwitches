@@ -1,4 +1,4 @@
-﻿namespace RickPowell.FeatureSwitches.Coffee.Stock.Domain
+﻿namespace RickPowell.FeatureSwitches.Coffee.Supply.Domain
 {
     public class Quantity
     {
