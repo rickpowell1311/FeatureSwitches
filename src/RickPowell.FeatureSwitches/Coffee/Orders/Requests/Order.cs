@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using RickPowell.FeatureSwitches.Coffee.Orders.Data;
 using RickPowell.FeatureSwitches.Coffee.Orders.Domain;
 using RickPowell.FeatureSwitches.Coffee.Supply.Services;
+using RickPowell.FeatureSwitches.FeatureSwitches.Services;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -41,11 +42,16 @@ namespace RickPowell.FeatureSwitches.Coffee.Orders.Requests
         {
             private readonly OrdersContext _context;
             private readonly ISupplierService _supplierService;
+            private readonly IFeatureSwitchService _featureSwitchService;
 
-            public Handler(OrdersContext context, ISupplierService supplierService)
+            public Handler(
+                OrdersContext context, 
+                ISupplierService supplierService, 
+                IFeatureSwitchService featureSwitchService)
             {
                 _context = context;
                 _supplierService = supplierService;
+                _featureSwitchService = featureSwitchService;
             }
 
             public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
@@ -57,11 +63,14 @@ namespace RickPowell.FeatureSwitches.Coffee.Orders.Requests
                     throw new InvalidOperationException($"Blend '{request.Blend.Name}' unavailable");
                 }
 
+                var featureSwitches = await _featureSwitchService.GetFeatureSwitches();
+
                 var purchase = await Purchase.MakePurchase(
-                        new Domain.Customer(request.Customer.Name),
-                        blend,
-                        request.Strength.ToStrength(),
-                        _supplierService);
+                    new Domain.Customer(request.Customer.Name),
+                    blend,
+                    request.Strength.ToStrength(),
+                    _supplierService,
+                    featureSwitches.UseExerimentalPricing);
 
                 _context.Purchases.Add(purchase);
 

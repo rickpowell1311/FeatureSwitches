@@ -20,7 +20,8 @@ namespace RickPowell.FeatureSwitches.Coffee.Orders.Domain
             Customer customer, 
             Blend blend,
             Strength strength, 
-            ISupplierService supplierService)
+            ISupplierService supplierService,
+            bool useExperimentalPricing)
         {
             var quantity = await supplierService.GetQuantity(new Supply.Services.Blend { Name = blend.Name });
 
@@ -31,7 +32,7 @@ namespace RickPowell.FeatureSwitches.Coffee.Orders.Domain
 
             return new Purchase
             {
-                Cost = blend.GetCost(strength),
+                Cost = blend.GetCost(useExperimentalPricing)(strength),
                 Customer = new Customer(customer.Name)
             };
         }

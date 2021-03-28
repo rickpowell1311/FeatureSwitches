@@ -24,13 +24,35 @@ namespace RickPowell.FeatureSwitches.Coffee.Orders.Domain
             };
         }
 
-        public Cost GetCost(Strength strength)
+        public Func<Strength, Cost> GetCost(bool useExperimentalCosting)
+        {
+            if (useExperimentalCosting)
+            {
+                return GetExperimentalCost;
+            }
+
+            return GetCost;
+        }
+
+        private Cost GetCost(Strength strength)
         {
             var costMultipliers = new Dictionary<Strength, decimal>
             {
                 { Strength.Weak, 0.8m },
                 { Strength.Normal, 1.0m },
                 { Strength.Strong, 1.2m }
+            };
+
+            return costMultipliers[strength] * BaseCost;
+        }
+
+        private Cost GetExperimentalCost(Strength strength)
+        {
+            var costMultipliers = new Dictionary<Strength, decimal>
+            {
+                { Strength.Weak, 0.7m },
+                { Strength.Normal, 1.0m },
+                { Strength.Strong, 1.3m }
             };
 
             return costMultipliers[strength] * BaseCost;
